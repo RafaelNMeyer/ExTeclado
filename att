@@ -1,0 +1,78 @@
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.Serializable;
+import java.util.*;
+import javax.swing.*;
+
+public class Produtos extends JFrame implements Serializable {
+
+	private Formatter saida;
+	private JTextField codigo, nome1, preco, ano;
+	private JPanel panel;
+	private ArrayList<String> palavras = new ArrayList<String>();
+
+	public Produtos() {
+		super("Produtos");
+		panel = new JPanel();
+		add(panel);
+
+		nome1 = new JTextField();
+		add(nome1);
+
+		nome1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (e.getSource() == nome1) {
+					palavras.add(nome1.getText());
+					nome1.setText("");
+					
+				}
+
+			}
+		});
+
+		openFile();
+		addRecords();
+	}
+
+	public void openFile() {
+
+		try {
+			saida = new Formatter("aaa.txt");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void addRecords() {
+
+		for (int i = 0; i < palavras.size(); i++) {
+
+			saida.format("%s\n", palavras.get(i));
+		}
+
+	}
+
+	public void closeFile() {
+		if (saida != null) {
+			saida.close();
+		}
+	}
+
+	public static void main(String[] args) {
+		Produtos frame = new Produtos();
+		frame.openFile();
+		frame.addRecords();
+		frame.closeFile();
+
+		frame.setVisible(true);
+		frame.setSize(400, 300);
+		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+
+	}
+}
